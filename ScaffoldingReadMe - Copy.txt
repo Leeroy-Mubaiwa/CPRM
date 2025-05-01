@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext name="cprmContext" Microsoft.EntityFrameworkCore.SqlServer -context CPRMDbContext -ContextDir Data  -outputdir Models -DataAnnotations -force

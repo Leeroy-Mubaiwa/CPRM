@@ -1,0 +1,84 @@
+﻿@model IEnumerable<CPRM.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Products</h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Add New Product
+        </a>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="position-relative" style="height: 200px; background-color: #f8f9fa;">
+                        <img src="@item.ImageUrl" class="card-img-top h-100 object-fit-cover" alt="@item.ProductName">
+                        <div class="position-absolute top-0 end-0 p-2">
+                            <span class="badge @(item.IsActive.Value ? "bg-success" : "bg-danger")">
+                                @(item.IsActive.Value ? "Active" : "Inactive")
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate">@item.ProductName</h5>
+                        <p class="card-text text-muted small text-truncate" style="height: 2.4em;">@item.Description</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="h5 mb-0">@item.Price.Value.ToString("C")</span>
+                            <div class="btn-group">
+                                <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.ProductId" class="btn btn-sm btn-outline-info">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <small class="text-muted">
+                            <i class="bi bi-calendar"></i> Added @item.CreatedAt.Value.ToString("MMM dd, yyyy")
+                        </small>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Lazy loading images
+        document.addEventListener("DOMContentLoaded", function () {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+
+            if ('loading' in HTMLImageElement.prototype) {
+                // Browser supports native lazy loading
+                images.forEach(img => {
+                    img.src = img.dataset.src;
+                });
+            } else {
+                // Fallback for browsers that don't support lazy loading
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src;
+                            observer.unobserve(img);
+                        }
+                    });
+                });
+
+                images.forEach(img => imageObserver.observe(img));
+            }
+        });
+    </script>
+}

@@ -1,0 +1,408 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Partner Registration";
+    ViewData["Subtitle"] = "Join our partner network and start growing your business";
+    Layout = "_AuthLayout";
+}
+
+<div class="auth-form">
+    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+
+        <div class="registration-steps mb-4">
+            <div class="step active">
+                <div class="step-number">1</div>
+                <div class="step-title">Personal Information</div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-title">Verification</div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-title">Account Setup</div>
+            </div>
+        </div>
+
+        <div class="step-content">
+            <div class="step-section mb-4">
+                <h5 class="section-title">Personal Information</h5>
+                <p class="section-description text-muted">Please provide your basic information to create your partner
+                    profile.</p>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Input.FirstName" class="form-label">First Name</label>
+                            <input asp-for="Input.FirstName" class="form-control" autocomplete="given-name"
+                                aria-required="true" placeholder="Enter your first name" />
+                            <span asp-validation-for="Input.FirstName" class="field-validation-error"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Input.LastName" class="form-label">Last Name</label>
+                            <input asp-for="Input.LastName" class="form-control" autocomplete="family-name"
+                                aria-required="true" placeholder="Enter your last name" />
+                            <span asp-validation-for="Input.LastName" class="field-validation-error"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Email" class="form-label">Email Address</label>
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true"
+                        placeholder="Enter your business email" />
+                    <small class="form-text text-muted">This will be your login username</small>
+                    <span asp-validation-for="Input.Email" class="field-validation-error"></span>
+                </div>
+            </div>
+
+            <div class="step-section mb-4">
+                <h5 class="section-title">Identity Verification</h5>
+                <p class="section-description text-muted">To ensure security and compliance, we need to verify your
+                    identity.</p>
+
+                <div class="mb-3">
+                    <label asp-for="Input.IDDocumentNumber" class="form-label">ID Document Number</label>
+                    <input asp-for="Input.IDDocumentNumber" class="form-control" aria-required="true"
+                        placeholder="Enter your ID number" />
+                    <small class="form-text text-muted">National ID, Passport, or Driver's License number</small>
+                    <span asp-validation-for="Input.IDDocumentNumber" class="field-validation-error"></span>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Input.IDDocument" class="form-label">Upload ID Document</label>
+                            <div class="upload-container">
+                                <input asp-for="Input.IDDocument" type="file" class="form-control" accept="image/*"
+                                    id="idInput" />
+                                <div class="upload-icon">
+                                    <i class="bi bi-upload"></i>
+                                </div>
+                            </div>
+                            <small class="form-text text-muted">Upload a clear photo of your ID document</small>
+                            <span asp-validation-for="Input.IDDocument" class="field-validation-error"></span>
+                            <div id="idPreview" class="mt-2"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Input.Photo" class="form-label">Take Your Photo</label>
+                            <div class="camera-container mb-2">
+                                <video id="video" class="w-100" autoplay playsinline></video>
+                                <canvas id="canvas" class="d-none"></canvas>
+                                <div class="camera-overlay">
+                                    <i class="bi bi-camera"></i>
+                                    <p>Position your face in the frame</p>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2 mb-2">
+                                <button type="button" class="btn btn-primary" id="captureBtn">
+                                    <i class="bi bi-camera"></i> Capture Photo
+                                </button>
+                                <button type="button" class="btn btn-secondary" id="retakeBtn">
+                                    <i class="bi bi-arrow-counterclockwise"></i> Retake
+                                </button>
+                            </div>
+                            <small class="form-text text-muted">Take a clear photo of yourself for verification</small>
+                            <input asp-for="Input.Photo" type="file" class="form-control d-none" accept="image/*" />
+                            <span asp-validation-for="Input.Photo" class="field-validation-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-section mb-4">
+                <h5 class="section-title">Account Security</h5>
+                <p class="section-description text-muted">Create a secure password to protect your account.</p>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Password" class="form-label">Password</label>
+                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password"
+                        aria-required="true" placeholder="Create a strong password" />
+                    <small class="form-text text-muted">Use at least 8 characters with a mix of letters, numbers &
+                        symbols</small>
+                    <span asp-validation-for="Input.Password" class="field-validation-error"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.ConfirmPassword" class="form-label">Confirm Password</label>
+                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password"
+                        aria-required="true" placeholder="Re-enter your password" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="field-validation-error"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button id="registerSubmit" type="submit" class="btn btn-primary">
+                <i class="bi bi-person-plus"></i> Complete Registration
+            </button>
+        </div>
+
+        <div class="text-center mt-3">
+            <p>
+                Already have an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Sign in</a>
+            </p>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Elements
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureBtn = document.getElementById('captureBtn');
+        const retakeBtn = document.getElementById('retakeBtn');
+        const idInput = document.getElementById('idInput');
+        const idPreview = document.getElementById('idPreview');
+        const photoInput = document.querySelector('input[name="Input.Photo"]');
+
+        let stream = null;
+
+        // Initialize webcam
+        async function initCamera() {
+            try {
+                const constraints = {
+                    video: {
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                        facingMode: "user"
+                    }
+                };
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = stream;
+            } catch (err) {
+                console.error("Error accessing camera:", err);
+                alert("Could not access camera. Please ensure you have granted permission.");
+            }
+        }
+
+        // Initialize camera
+        initCamera();
+
+        // Handle ID document upload preview
+        idInput.addEventListener('change', function (e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const preview = document.createElement('img');
+                    preview.src = e.target.result;
+                    preview.style.maxWidth = '100%';
+                    preview.style.maxHeight = '200px';
+                    idPreview.innerHTML = '';
+                    idPreview.appendChild(preview);
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // Handle photo capture
+        captureBtn.addEventListener('click', function () {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            canvas.toBlob((blob) => {
+                const file = new File([blob], 'user_photo.jpg', { type: 'image/jpeg' });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                photoInput.files = dataTransfer.files;
+
+                // Show image preview
+                const imgPreview = new Image();
+                imgPreview.src = URL.createObjectURL(blob);
+                imgPreview.style.maxWidth = '100%';
+                imgPreview.style.border = "1px solid #ccc";
+                imgPreview.style.borderRadius = "0.25rem";
+                imgPreview.classList.add("mt-2");
+
+                // Hide video, show canvas, and replace canvas with image for better UX
+                video.classList.add("d-none");
+                canvas.classList.add("d-none");
+                video.parentElement.appendChild(imgPreview);
+            }, 'image/jpeg', 0.95);
+        });
+
+        // Handle retake
+        retakeBtn.addEventListener('click', function () {
+            video.classList.remove("d-none");
+            canvas.classList.add("d-none");
+            photoInput.value = '';
+
+            // Remove any existing image preview
+            const existingImage = video.parentElement.querySelector("img");
+            if (existingImage) existingImage.remove();
+        });
+
+        // Clean up camera stream
+        window.addEventListener('beforeunload', () => {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        });
+    </script>
+
+    <style>
+        .registration-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .registration-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+
+        .step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            background: white;
+            padding: 0 1rem;
+        }
+
+        .step.active .step-number {
+            background: #0d6efd;
+            color: white;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-weight: 500;
+        }
+
+        .step-title {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+
+        .step.active .step-title {
+            color: #0d6efd;
+            font-weight: 500;
+        }
+
+        .step-section {
+            background: #f8f9fa;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            color: #212529;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-description {
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .upload-container {
+            position: relative;
+        }
+
+        .upload-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+
+        .camera-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background-color: #f8f9fa;
+            border-radius: 0.25rem;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .camera-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .camera-container:hover .camera-overlay {
+            opacity: 1;
+        }
+
+        .camera-overlay i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .camera-overlay p {
+            margin: 0;
+            font-size: 0.875rem;
+        }
+
+        .camera-container video,
+        .camera-container canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .camera-container canvas {
+            background-color: white;
+        }
+
+        #idPreview img {
+            border-radius: 0.25rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .form-control {
+            padding: 0.75rem 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+    </style>
+}

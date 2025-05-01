@@ -1,0 +1,39 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Register confirmation";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center">@ViewData["Title"]</h1>
+                </div>
+                <div class="card-body">
+                    @{
+                        if (@Model.DisplayConfirmAccountLink)
+                        {
+                            <p class="text-center">
+                                Please check your email to confirm your account. If you haven't received the email, please check
+                                your spam folder.
+                            </p>
+                            <div class="text-center">
+                                <a id="confirm-link" href="@Model.EmailConfirmationUrl" class="btn btn-primary">Click here to
+                                    confirm your account</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-center">
+                                Please check your email to confirm your account. If you haven't received the email, please check
+                                your spam folder.
+                            </p>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

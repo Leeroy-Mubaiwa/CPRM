@@ -1,0 +1,47 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Welcome Back";
+    ViewData["Subtitle"] = "Sign in to your account";
+    Layout = "_AuthLayout";
+}
+
+<div class="auth-form">
+    <form id="account" method="post">
+        <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Email" class="form-label">Email Address</label>
+            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+            <span asp-validation-for="Input.Email" class="field-validation-error"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Password" class="form-label">Password</label>
+            <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
+            <span asp-validation-for="Input.Password" class="field-validation-error"></span>
+        </div>
+
+        <div class="mb-3 form-check">
+            <input class="form-check-input" asp-for="Input.RememberMe" />
+            <label class="form-check-label" asp-for="Input.RememberMe">Remember me</label>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button id="login-submit" type="submit" class="btn btn-primary">Sign In</button>
+        </div>
+
+        <div class="text-center mt-3">
+            <p>
+                <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+            </p>
+            <p>
+                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Create a new account</a>
+            </p>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
